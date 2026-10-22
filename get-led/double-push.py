@@ -1,10 +1,9 @@
 import RPi.GPIO as GPIO 
 import time
 
-GPIO.setwarnings(False)
 
 GPIO.setmode(GPIO.BCM) 
-leds = [16, 5, 25, 17, 27, 23, 22, 24] 
+leds = [16, 12, 25, 17, 27, 23, 22, 24] 
 GPIO.setup(leds, GPIO.OUT) 
 GPIO.output(leds, GPIO.LOW) 
 BUTTON_UP = 9 
@@ -19,11 +18,17 @@ def dec2bin(value):
 try: 
     while True: 
         change = False 
-        if GPIO.input(BUTTON_UP): 
-            num = num + 1 
+        up = GPIO.input(BUTTON_UP)
+        down = GPIO.input(BUTTON_DOWN)
+
+        if up and down: 
+            num = 255
+            change = True
+        elif up:
+            num += 1
             change = True 
-        elif GPIO.input(BUTTON_DOWN):
-            num = num - 1 
+        elif down:
+            num -= 1 
             change = True 
             
         if change: 
